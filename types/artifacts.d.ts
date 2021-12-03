@@ -553,12 +553,21 @@ declare module Artifacts {
   }
 
   interface InspectorIssues {
-    mixedContent: LH.Crdp.Audits.MixedContentIssueDetails[];
-    sameSiteCookies: LH.Crdp.Audits.SameSiteCookieIssueDetails[];
-    blockedByResponse: LH.Crdp.Audits.BlockedByResponseIssueDetails[];
-    heavyAds: LH.Crdp.Audits.HeavyAdIssueDetails[];
-    contentSecurityPolicy: LH.Crdp.Audits.ContentSecurityPolicyIssueDetails[];
-    deprecations: LH.Crdp.Audits.DeprecationIssueDetails[];
+    sameSiteCookieIssue: LH.Crdp.Audits.SameSiteCookieIssueDetails[];
+    mixedContentIssue: LH.Crdp.Audits.MixedContentIssueDetails[];
+    blockedByResponseIssue: LH.Crdp.Audits.BlockedByResponseIssueDetails[];
+    heavyAdIssue: LH.Crdp.Audits.HeavyAdIssueDetails[];
+    contentSecurityPolicyIssue: LH.Crdp.Audits.ContentSecurityPolicyIssueDetails[];
+    sharedArrayBufferIssue: LH.Crdp.Audits.SharedArrayBufferIssueDetails[];
+    twaQualityEnforcement: LH.Crdp.Audits.TrustedWebActivityIssueDetails[];
+    lowTextContrastIssue: LH.Crdp.Audits.LowTextContrastIssueDetails[];
+    corsIssue: LH.Crdp.Audits.CorsIssueDetails[];
+    attributionReportingIssue: LH.Crdp.Audits.AttributionReportingIssueDetails[];
+    quirksModeIssue: LH.Crdp.Audits.QuirksModeIssueDetails[];
+    navigatorUserAgentIssue: LH.Crdp.Audits.NavigatorUserAgentIssueDetails[];
+    wasmCrossOriginModuleSharingIssue: LH.Crdp.Audits.WasmCrossOriginModuleSharingIssueDetails[];
+    genericIssue: LH.Crdp.Audits.GenericIssueDetails[];
+    deprecationIssue: LH.Crdp.Audits.DeprecationIssueDetails[];
   }
 
   // Computed artifact types below.
