@@ -100,4 +100,7 @@ async function run() {
   await packageExtension();
 }
 
-run();
+run().catch(err => {
+  console.error(err);
+  process.exit(1);
+});
