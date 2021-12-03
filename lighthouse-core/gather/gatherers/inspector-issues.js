@@ -59,56 +59,59 @@ class InspectorIssues extends FRGatherer {
    */
   async _getArtifact(networkRecords) {
     const artifact = {
-      /** @type {Array<LH.Crdp.Audits.MixedContentIssueDetails>} */
-      mixedContent: [],
       /** @type {Array<LH.Crdp.Audits.SameSiteCookieIssueDetails>} */
-      sameSiteCookies: [],
+      sameSiteCookieIssue: [],
+      /** @type {Array<LH.Crdp.Audits.MixedContentIssueDetails>} */
+      mixedContentIssue: [],
       /** @type {Array<LH.Crdp.Audits.BlockedByResponseIssueDetails>} */
-      blockedByResponse: [],
+      blockedByResponseIssue: [],
       /** @type {Array<LH.Crdp.Audits.HeavyAdIssueDetails>} */
-      heavyAds: [],
+      heavyAdIssue: [],
       /** @type {Array<LH.Crdp.Audits.ContentSecurityPolicyIssueDetails>} */
-      contentSecurityPolicy: [],
+      contentSecurityPolicyIssue: [],
+      /** @type {Array<LH.Crdp.Audits.SharedArrayBufferIssueDetails>} */
+      sharedArrayBufferIssue: [],
+      /** @type {Array<LH.Crdp.Audits.TrustedWebActivityIssueDetails>} */
+      twaQualityEnforcement: [],
+      /** @type {Array<LH.Crdp.Audits.LowTextContrastIssueDetails>} */
+      lowTextContrastIssue: [],
+      /** @type {Array<LH.Crdp.Audits.CorsIssueDetails>} */
+      corsIssue: [],
+      /** @type {Array<LH.Crdp.Audits.AttributionReportingIssueDetails>} */
+      attributionReportingIssue: [],
+      /** @type {Array<LH.Crdp.Audits.QuirksModeIssueDetails>} */
+      quirksModeIssue: [],
+      /** @type {Array<LH.Crdp.Audits.NavigatorUserAgentIssueDetails>} */
+      navigatorUserAgentIssue: [],
+      /** @type {Array<LH.Crdp.Audits.WasmCrossOriginModuleSharingIssueDetails>} */
+      wasmCrossOriginModuleSharingIssue: [],
+      /** @type {Array<LH.Crdp.Audits.GenericIssueDetails>} */
+      genericIssue: [],
       /** @type {Array<LH.Crdp.Audits.DeprecationIssueDetails>} */
-      deprecations: [],
+      deprecationIssue: [],
     };
 
-    for (const issue of this._issues) {
-      if (issue.details.mixedContentIssueDetails) {
-        const issueDetails = issue.details.mixedContentIssueDetails;
-        const issueReqId = issueDetails.request && issueDetails.request.requestId;
-        // Duplicate issues can occur for the same request; only use the one with a matching networkRequest.
-        if (issueReqId &&
-          networkRecords.find(req => req.requestId === issueReqId)) {
-          artifact.mixedContent.push(issueDetails);
+    /** @type {Array<keyof LH.Artifacts['InspectorIssues']>} */
+    const keys = Object.keys(artifact);
+    for (const key of keys) {
+      /** @type {`${key}Details` | `wasmCrossOriginModuleSharingIssue`} */
+      const detailsKey = (key === 'wasmCrossOriginModuleSharingIssue' ? `${key}` : `${key}Details`);
+      const allDetails = this._issues.map(issue => issue.details[detailsKey]);
+      for (const detail of allDetails) {
+        if (detail) {
+          if (Object.prototype.hasOwnProperty.call(detail, 'request')) {
+            // Duplicate issues can occur for the same request; only use the one with a matching networkRequest.
+            // @ts-expect-error - just established there is a request property
+            const requestId = detail.request.requestId;
+            if ((requestId && networkRecords.find(req => req.requestId === requestId))) {
+              // @ts-expect-error - detail types are not all compatible
+              artifact[key].push(detail);
+            }
+          } else {
+            // @ts-expect-error - detail types are not all compatible
+            artifact[key].push(detail);
+          }
         }
-      }
-      if (issue.details.sameSiteCookieIssueDetails) {
-        const issueDetails = issue.details.sameSiteCookieIssueDetails;
-        const issueReqId = issueDetails.request && issueDetails.request.requestId;
-        // Duplicate issues can occur for the same request; only use the one with a matching networkRequest.
-        if (issueReqId &&
-          networkRecords.find(req => req.requestId === issueReqId)) {
-          artifact.sameSiteCookies.push(issueDetails);
-        }
-      }
-      if (issue.details.blockedByResponseIssueDetails) {
-        const issueDetails = issue.details.blockedByResponseIssueDetails;
-        const issueReqId = issueDetails.request && issueDetails.request.requestId;
-        // Duplicate issues can occur for the same request; only use the one with a matching networkRequest.
-        if (issueReqId &&
-          networkRecords.find(req => req.requestId === issueReqId)) {
-          artifact.blockedByResponse.push(issueDetails);
-        }
-      }
-      if (issue.details.heavyAdIssueDetails) {
-        artifact.heavyAds.push(issue.details.heavyAdIssueDetails);
-      }
-      if (issue.details.contentSecurityPolicyIssueDetails) {
-        artifact.contentSecurityPolicy.push(issue.details.contentSecurityPolicyIssueDetails);
-      }
-      if (issue.details.deprecationIssueDetails) {
-        artifact.deprecations.push(issue.details.deprecationIssueDetails);
       }
     }
 
