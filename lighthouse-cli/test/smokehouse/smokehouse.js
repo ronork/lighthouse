@@ -32,7 +32,7 @@
  * @property {Run[]} runs
  */
 
-import assert from 'assert/strict';
+import assert from 'assert';
 
 import log from 'lighthouse-logger';
 
@@ -267,14 +267,13 @@ function getShardedDefinitions(testDefns, shardArg) {
     shards.push(testDefns.slice(index, index + shardSize));
     index += shardSize;
   }
-  assert.equal(shards.length, shardTotal);
-  assert.deepEqual(shards.flat(), testDefns);
+  assert.strictEqual(shards.length, shardTotal);
+  assert.deepStrictEqual(shards.flat(), testDefns);
 
   const shardDefns = shards[shardNumber - 1];
   console.log(`In this shard (${shardArg}), running: ${shardDefns.map(d => d.id).join(' ')}\n`);
   return shardDefns;
 }
-
 
 export {
   runSmokehouse,
