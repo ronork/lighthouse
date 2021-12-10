@@ -58,59 +58,47 @@ class InspectorIssues extends FRGatherer {
    * @return {Promise<LH.Artifacts['InspectorIssues']>}
    */
   async _getArtifact(networkRecords) {
+    /** @type {LH.Artifacts.InspectorIssues} */
     const artifact = {
-      /** @type {Array<LH.Crdp.Audits.SameSiteCookieIssueDetails>} */
-      sameSiteCookieIssue: [],
-      /** @type {Array<LH.Crdp.Audits.MixedContentIssueDetails>} */
-      mixedContentIssue: [],
-      /** @type {Array<LH.Crdp.Audits.BlockedByResponseIssueDetails>} */
-      blockedByResponseIssue: [],
-      /** @type {Array<LH.Crdp.Audits.HeavyAdIssueDetails>} */
-      heavyAdIssue: [],
-      /** @type {Array<LH.Crdp.Audits.ContentSecurityPolicyIssueDetails>} */
-      contentSecurityPolicyIssue: [],
-      /** @type {Array<LH.Crdp.Audits.SharedArrayBufferIssueDetails>} */
-      sharedArrayBufferIssue: [],
-      /** @type {Array<LH.Crdp.Audits.TrustedWebActivityIssueDetails>} */
-      twaQualityEnforcement: [],
-      /** @type {Array<LH.Crdp.Audits.LowTextContrastIssueDetails>} */
-      lowTextContrastIssue: [],
-      /** @type {Array<LH.Crdp.Audits.CorsIssueDetails>} */
-      corsIssue: [],
-      /** @type {Array<LH.Crdp.Audits.AttributionReportingIssueDetails>} */
       attributionReportingIssue: [],
-      /** @type {Array<LH.Crdp.Audits.QuirksModeIssueDetails>} */
-      quirksModeIssue: [],
-      /** @type {Array<LH.Crdp.Audits.NavigatorUserAgentIssueDetails>} */
-      navigatorUserAgentIssue: [],
-      /** @type {Array<LH.Crdp.Audits.WasmCrossOriginModuleSharingIssueDetails>} */
-      wasmCrossOriginModuleSharingIssue: [],
-      /** @type {Array<LH.Crdp.Audits.GenericIssueDetails>} */
-      genericIssue: [],
-      /** @type {Array<LH.Crdp.Audits.DeprecationIssueDetails>} */
+      blockedByResponseIssue: [],
+      contentSecurityPolicyIssue: [],
+      corsIssue: [],
       deprecationIssue: [],
+      genericIssue: [],
+      heavyAdIssue: [],
+      lowTextContrastIssue: [],
+      mixedContentIssue: [],
+      navigatorUserAgentIssue: [],
+      quirksModeIssue: [],
+      sameSiteCookieIssue: [],
+      sharedArrayBufferIssue: [],
+      twaQualityEnforcement: [],
+      wasmCrossOriginModuleSharingIssue: [],
     };
 
     /** @type {Array<keyof LH.Artifacts['InspectorIssues']>} */
     const keys = Object.keys(artifact);
     for (const key of keys) {
+      // The wasmCrossOriginModuleSharingIssue key doesn't follow the pattern of the rest. See
+      // https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/public/devtools_protocol/browser_protocol.pdl;l=811;drc=9c10bf258928b5d169ba6a449f8f33958f7947ea
       /** @type {`${key}Details` | `wasmCrossOriginModuleSharingIssue`} */
       const detailsKey = (key === 'wasmCrossOriginModuleSharingIssue' ? `${key}` : `${key}Details`);
       const allDetails = this._issues.map(issue => issue.details[detailsKey]);
       for (const detail of allDetails) {
-        if (detail) {
-          if (Object.prototype.hasOwnProperty.call(detail, 'request')) {
-            // Duplicate issues can occur for the same request; only use the one with a matching networkRequest.
-            // @ts-expect-error - just established there is a request property
-            const requestId = detail.request.requestId;
-            if ((requestId && networkRecords.find(req => req.requestId === requestId))) {
-              // @ts-expect-error - detail types are not all compatible
-              artifact[key].push(detail);
-            }
-          } else {
+        if (!detail) {
+          continue;
+        }
+        // Duplicate issues can occur for the same request; only use the one with a matching networkRequest.
+        const requestId = 'request' in detail && detail.request && detail.request.requestId;
+        if (requestId) {
+          if (networkRecords.find(req => req.requestId === requestId)) {
             // @ts-expect-error - detail types are not all compatible
             artifact[key].push(detail);
           }
+        } else {
+          // @ts-expect-error - detail types are not all compatible
+          artifact[key].push(detail);
         }
       }
     }

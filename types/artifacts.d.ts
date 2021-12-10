@@ -553,21 +553,21 @@ declare module Artifacts {
   }
 
   interface InspectorIssues {
-    sameSiteCookieIssue: LH.Crdp.Audits.SameSiteCookieIssueDetails[];
-    mixedContentIssue: LH.Crdp.Audits.MixedContentIssueDetails[];
+    attributionReportingIssue: LH.Crdp.Audits.AttributionReportingIssueDetails[];
     blockedByResponseIssue: LH.Crdp.Audits.BlockedByResponseIssueDetails[];
-    heavyAdIssue: LH.Crdp.Audits.HeavyAdIssueDetails[];
     contentSecurityPolicyIssue: LH.Crdp.Audits.ContentSecurityPolicyIssueDetails[];
+    corsIssue: LH.Crdp.Audits.CorsIssueDetails[];
+    deprecationIssue: LH.Crdp.Audits.DeprecationIssueDetails[];
+    genericIssue: LH.Crdp.Audits.GenericIssueDetails[];
+    heavyAdIssue: LH.Crdp.Audits.HeavyAdIssueDetails[];
+    lowTextContrastIssue: LH.Crdp.Audits.LowTextContrastIssueDetails[];
+    mixedContentIssue: LH.Crdp.Audits.MixedContentIssueDetails[];
+    navigatorUserAgentIssue: LH.Crdp.Audits.NavigatorUserAgentIssueDetails[];
+    quirksModeIssue: LH.Crdp.Audits.QuirksModeIssueDetails[];
+    sameSiteCookieIssue: LH.Crdp.Audits.SameSiteCookieIssueDetails[];
     sharedArrayBufferIssue: LH.Crdp.Audits.SharedArrayBufferIssueDetails[];
     twaQualityEnforcement: LH.Crdp.Audits.TrustedWebActivityIssueDetails[];
-    lowTextContrastIssue: LH.Crdp.Audits.LowTextContrastIssueDetails[];
-    corsIssue: LH.Crdp.Audits.CorsIssueDetails[];
-    attributionReportingIssue: LH.Crdp.Audits.AttributionReportingIssueDetails[];
-    quirksModeIssue: LH.Crdp.Audits.QuirksModeIssueDetails[];
-    navigatorUserAgentIssue: LH.Crdp.Audits.NavigatorUserAgentIssueDetails[];
     wasmCrossOriginModuleSharingIssue: LH.Crdp.Audits.WasmCrossOriginModuleSharingIssueDetails[];
-    genericIssue: LH.Crdp.Audits.GenericIssueDetails[];
-    deprecationIssue: LH.Crdp.Audits.DeprecationIssueDetails[];
   }
 
   // Computed artifact types below.
