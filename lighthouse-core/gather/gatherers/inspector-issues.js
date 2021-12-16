@@ -58,7 +58,6 @@ class InspectorIssues extends FRGatherer {
    * @return {Promise<LH.Artifacts['InspectorIssues']>}
    */
   async _getArtifact(networkRecords) {
-    /** @type {LH.Artifacts.InspectorIssues} */
     const artifact = {
       attributionReportingIssue: [],
       blockedByResponseIssue: [],
