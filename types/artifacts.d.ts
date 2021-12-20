@@ -555,6 +555,7 @@ declare module Artifacts {
   interface InspectorIssues {
     attributionReportingIssue: LH.Crdp.Audits.AttributionReportingIssueDetails[];
     blockedByResponseIssue: LH.Crdp.Audits.BlockedByResponseIssueDetails[];
+    clientHintIssue: LH.Crdp.Audits.ClientHintIssueDetails[];
     contentSecurityPolicyIssue: LH.Crdp.Audits.ContentSecurityPolicyIssueDetails[];
     corsIssue: LH.Crdp.Audits.CorsIssueDetails[];
     deprecationIssue: LH.Crdp.Audits.DeprecationIssueDetails[];

@@ -61,6 +61,7 @@ class InspectorIssues extends FRGatherer {
     const artifact = {
       attributionReportingIssue: [],
       blockedByResponseIssue: [],
+      clientHintIssue: [],
       contentSecurityPolicyIssue: [],
       corsIssue: [],
       deprecationIssue: [],
