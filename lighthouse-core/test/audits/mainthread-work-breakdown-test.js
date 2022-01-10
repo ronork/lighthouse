@@ -58,7 +58,7 @@ describe('Performance: page execution timings audit', () => {
     assert.deepStrictEqual(keyOutput(output), acceptableTraceExpectations);
     assert.equal(Math.round(output.numericValue), 1360);
     assert.equal(output.details.items.length, 7);
-    assert.equal(output.score, 0.98);
+    assert.equal(output.score, 0.97);
   });
 
   it('should compute the correct values when simulated', async () => {
@@ -77,7 +77,7 @@ describe('Performance: page execution timings audit', () => {
 
     assert.equal(Math.round(output.numericValue), 4081);
     assert.equal(output.details.items.length, 7);
-    assert.equal(output.score, 0.49);
+    assert.equal(output.score, 0.48);
   });
 
   it('should compute the correct values for the redirect trace', async () => {
@@ -97,7 +97,7 @@ describe('Performance: page execution timings audit', () => {
     assert.deepStrictEqual(keyOutput(output), loadTraceExpectations);
     assert.equal(Math.round(output.numericValue), 933);
     assert.equal(output.details.items.length, 6);
-    assert.equal(output.score, 1);
+    assert.equal(output.score, 0.99);
   });
 
   it('should get no data when no events are present', () => {

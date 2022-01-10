@@ -78,8 +78,16 @@ class Audit {
    * @return {number}
    */
   static computeLogNormalScore(controlPoints, value) {
-    const percentile = statistics.getLogNormalScore(controlPoints, value);
-    return clampTo2Decimals(percentile);
+    // Value should never be < 0, but head off issues and always return 1.
+    if (value <= 0) return 1;
+
+    let percentile = statistics.getLogNormalScore(controlPoints, value);
+    // Add a boost to scores of 90+, linearly ramping from 0 at 90 to half a
+    // point at 100 so users at top can get 100 after the `Math.floor()` below.
+    if (value < controlPoints.p10) {
+      percentile += 0.005 * (1 - value / controlPoints.p10);
+    }
+    return Math.floor(percentile * 100) / 100;
   }
 
   /**
