@@ -58,6 +58,7 @@ class InspectorIssues extends FRGatherer {
    * @return {Promise<LH.Artifacts['InspectorIssues']>}
    */
   async _getArtifact(networkRecords) {
+    /** @type {LH.Artifacts.InspectorIssues} */
     const artifact = {
       attributionReportingIssue: [],
       blockedByResponseIssue: [],
@@ -76,9 +77,7 @@ class InspectorIssues extends FRGatherer {
       twaQualityEnforcement: [],
       wasmCrossOriginModuleSharingIssue: [],
     };
-
-    /** @type {Array<keyof LH.Artifacts['InspectorIssues']>} */
-    const keys = Object.keys(artifact);
+    const keys = /** @type {Array<keyof LH.Artifacts['InspectorIssues']>} */(Object.keys(artifact));
     for (const key of keys) {
       // The wasmCrossOriginModuleSharingIssue key doesn't follow the pattern of the rest. See
       // https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/public/devtools_protocol/browser_protocol.pdl;l=811;drc=9c10bf258928b5d169ba6a449f8f33958f7947ea
